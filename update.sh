@@ -18,16 +18,15 @@ echo "local :	$geyser_local_bytes	$floodgate_local_bytes"
 echo "remote:	$geyser_remote_bytes	$floodgate_remote_bytes"
 
 if [ $geyser_local_bytes != $geyser_remote_bytes ] || [ $floodgate_local_bytes != $floodgate_remote_bytes ]; then
-	echo "Update prepare"
+	echo "Update prepared"
 	is_necessary_update=true
+	cd $plugin_dir
+	$curl_path --silent -O $geyser_remote/$geyser_name
+	$curl_path --silent -O $floodgate_remote/$floodgate_name
 fi
 
 if [ $is_necessary_update != false ]; then
 	echo "Update required - $is_necessary_update"
-
-	cd $plugin_dir
-	$curl_path --silent -O $geyser_remote/$geyser_name
-	$curl_path --silent -O $floodgate_remote/$floodgate_name
 
 	cd $minecraft_dir
 	docker-compose down
